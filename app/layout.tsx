@@ -18,6 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="sq">
+      <head>
+        <link rel="icon" href="/icon.png" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   )
