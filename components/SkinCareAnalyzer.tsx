@@ -58,7 +58,7 @@ export default function SkinCareAnalyzer() {
         </div>
         {analysis && (
           <div className="mt-4 p-4 bg-[#d9d4ca] rounded-md text-sm">
-            <p className="whitespace-pre-wrap">{analysis}</p>
+            <div dangerouslySetInnerHTML={{ __html: analysis }} />
           </div>
         )}
       </CardContent>
