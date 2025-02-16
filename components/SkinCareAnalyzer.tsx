@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -12,6 +14,8 @@ export default function SkinCareAnalyzer() {
   const [loading, setLoading] = useState(false)
 
   const analyzeProduct = async () => {
+    if (!product.trim()) return
+
     setLoading(true)
     try {
       const response = await fetch("/api/analyze", {
@@ -26,6 +30,12 @@ export default function SkinCareAnalyzer() {
       setAnalysis("Gabim gjatë analizimit të produktit. Ju lutemi provoni përsëri.")
     }
     setLoading(false)
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !loading) {
+      analyzeProduct()
+    }
   }
 
   return (
@@ -46,19 +56,20 @@ export default function SkinCareAnalyzer() {
             placeholder="Shkruani emrin e produktit"
             value={product}
             onChange={(e) => setProduct(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="bg-[#e9e4da] text-[#0d150e] border-[#0d150e]"
           />
           <Button
             onClick={analyzeProduct}
-            disabled={loading}
+            disabled={loading || !product.trim()}
             className="bg-[#0d150e] text-[#e9e4da] hover:bg-[#1a2a1e] w-full"
           >
             {loading ? "Duke analizuar..." : "Analizo"}
           </Button>
         </div>
         {analysis && (
-          <div className="mt-4 p-4 bg-[#d9d4ca] rounded-md text-sm">
-            <div dangerouslySetInnerHTML={{ __html: analysis }} />
+          <div className="mt-4 p-4 bg-[#d9d4ca] rounded-md text-sm leading-relaxed">
+            <div dangerouslySetInnerHTML={{ __html: analysis }} className="space-y-2" />
           </div>
         )}
       </CardContent>
